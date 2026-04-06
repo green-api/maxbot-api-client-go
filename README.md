@@ -65,7 +65,7 @@ bot, err := api.New(client.Config{
     BaseURL: "https://platform-api.max.ru",
     Token:   "YOUR_BOT_TOKEN",              // Замените на ваш токен
     RateLimiter: 25,
-    Timeout: 30
+    Timeout: 30 * time.Second,
 })
 if err != nil {
     log.Fatal().Err(err).Msg("failed to init MAX API")

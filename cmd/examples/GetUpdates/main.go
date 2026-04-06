@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/rs/zerolog/log"
 
@@ -12,8 +13,10 @@ import (
 
 func main() {
 	bot, err := api.New(client.Config{
-		BaseURL: "https://platform-api.max.ru",
-		Token:   "YOUR_BOT_TOKEN",
+		BaseURL:     "https://platform-api.max.ru",
+		Token:       "YOUR_BOT_TOKEN",
+		RateLimiter: 25,
+		Timeout:     30 * time.Second,
 	})
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to init MAX API")
