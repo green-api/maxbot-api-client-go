@@ -19,10 +19,10 @@ import (
 )
 
 type Config struct {
-	BaseURL   string
-	Token     string
-	Timeout   time.Duration
-	GlobalRPS int
+	BaseURL     string
+	Token       string
+	Timeout     time.Duration
+	RateLimiter int
 }
 
 type Client struct {
@@ -34,8 +34,8 @@ type Client struct {
 }
 
 func NewClient(cfg Config) (*Client, error) {
-	if cfg.GlobalRPS <= 0 {
-		cfg.GlobalRPS = 25 /* Exceeding the limit will lead to account ban */
+	if cfg.RateLimiter <= 0 {
+		cfg.RateLimiter = 25 /* Exceeding the limit will lead to account ban */
 	}
 
 	if cfg.Timeout <= 0 {
@@ -54,7 +54,7 @@ func NewClient(cfg Config) (*Client, error) {
 		baseURL:       cfg.BaseURL,
 		token:         cfg.Token,
 		httpClient:    &http.Client{Timeout: cfg.Timeout},
-		globalLimiter: rate.NewLimiter(rate.Limit(cfg.GlobalRPS), cfg.GlobalRPS),
+		globalLimiter: rate.NewLimiter(rate.Limit(cfg.RateLimiter), cfg.RateLimiter),
 	}
 
 	return client, nil
